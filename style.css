@@ -1,0 +1,39 @@
+* {
+    margin: 0;
+    padding: 0;
+    line-height: 0;
+    color: white;
+}
+
+canvas {
+    opacity: 0.5;
+    border: 1px solid black;
+}
+
+canvas:hover{
+    opacity: 1;
+    border: 1px dotted red;
+    cursor: pointer;
+}
+
+body {
+    background-color: black;
+}
+
+#left{
+    float: left;
+    width: fit-content;
+}
+
+#right{
+    float: right;
+}
+
+#right canvas{
+    border: 1px dotted white;
+    opacity: 1;
+}
+
+#right canvas:hover{
+    border: 1px dotted red;
+}
