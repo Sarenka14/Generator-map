@@ -3,6 +3,7 @@
 
 //44x38
 
+
 let image = new Image();
 image.src = 'sprites.png';
 image.onload = () => {
@@ -17,6 +18,8 @@ image.onload = () => {
     let canvasRightId: number = 0
 
     let tempCanvasId: string = ""
+
+    let clicked: boolean
 
     for (let i = 0; i < numColsToCut; ++i) {
         for (let j = 0; j < numRowsToCut; ++j) {
@@ -86,4 +89,22 @@ image.onload = () => {
         }
         document.querySelector("#right")!.appendChild(document.createElement('br'))
     }
+
+
+    document.querySelector("#right")!.addEventListener("mousedown", (e) => {
+        clicked = true
+
+        document.getElementById("selection")!.style.display = "block";
+        document.querySelector("#right")!.addEventListener("mousemove", () => {
+            if (clicked) {
+                document.getElementById("selection")!.style.width = "400px"
+                document.getElementById("selection")!.style.height = "400px"
+
+                document.querySelector("#right")!.addEventListener("mouseup", () => {
+                    clicked = false
+                    document.querySelector("#right")!.addEventListener("mousemove", function () { });
+                })
+            }
+        })
+    })
 }
