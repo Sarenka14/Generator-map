@@ -95,16 +95,25 @@ image.onload = () => {
         clicked = true
 
         document.getElementById("selection")!.style.display = "block";
-        document.querySelector("#right")!.addEventListener("mousemove", () => {
+        document.getElementById("selection")!.style.left = ((e as MouseEvent).clientX).toString() + "px"
+        document.getElementById("selection")!.style.top = ((e as MouseEvent).clientY).toString() + "px"
+        
+        document.querySelector("#right")!.addEventListener("mousemove", (e2) => {
+
+
             if (clicked) {
-                document.getElementById("selection")!.style.width = "400px"
-                document.getElementById("selection")!.style.height = "400px"
+
+                document.getElementById("selection")!.style.width = ((e2 as MouseEvent).clientX - (e as MouseEvent).clientX).toString() + "px";
+                document.getElementById("selection")!.style.height = ((e2 as MouseEvent).clientY - (e as MouseEvent).clientY).toString() + "px";
 
                 document.querySelector("#right")!.addEventListener("mouseup", () => {
                     clicked = false
-                    document.querySelector("#right")!.addEventListener("mousemove", function () { });
+                    document.getElementById("selection")!.style.display = "none";
+                    document.getElementById("selection")!.style.width = "0";
+                    document.getElementById("selection")!.style.height = "0";
                 })
             }
         })
     })
 }
+
