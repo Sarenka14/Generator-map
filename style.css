@@ -1,5 +1,4 @@
 * {
-    text-align: center;
     line-height: 0;
     color: white;
 }
@@ -20,7 +19,6 @@ body {
 }
 
 #left{
-    margin-top: 20px;
     float: left;
     width: fit-content;
 }
@@ -38,13 +36,19 @@ body {
     border: 1px dotted red;
 }
 
-#textLeft{
-    width: 416px;
-    text-align: center;
+p.items{
+    margin-left: 10%;
 }
 
-#textRight{
-    width: 1232px;
-    text-align: center;
-    float: right;
+p.map{
+    position: absolute;
+    top: -10px;
+    margin-left: 63%;
+}
+
+#selection{ 
+    display: none;
+    position:absolute;
+    background-color:yellow;
+    border: 1px solid rgba(6, 217, 160, 0.3);   
 }
