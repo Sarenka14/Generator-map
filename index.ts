@@ -76,32 +76,30 @@ image.onload = () => {
             canvas.id = canvasRightId.toString()
             canvas.style.margin = "1px";
             document.querySelector("#right")!.append(canvas);
-
-            canvas.addEventListener('click', function () {
-                if (tempCanvasId != "") {
-                    document.getElementById(tempCanvasId)!.style.border = "1px dotted white"
-                }
-                tempCanvasId = canvas.id.toString()
-                document.getElementById(canvas.id.toString())!.style.border = "1px dotted red"
-            })
-
             canvasRightId++
         }
         document.querySelector("#right")!.appendChild(document.createElement('br'))
     }
 
-
     document.querySelector("#right")!.addEventListener("mousedown", (e) => {
         clicked = true
+        if (tempCanvasId != "") {
+            document.getElementById(tempCanvasId)!.style.border = "1px dotted white"
+        }
 
-        document.getElementById("selection")!.style.display = "block";
+        for (let i = 0; i < 1672; i++) {
+            document.getElementById(i.toString())!.addEventListener('click', function () {
+                tempCanvasId = i.toString()
+                document.getElementById(i.toString())!.style.border = "1px dotted red"
+            })
+        }
+
         document.getElementById("selection")!.style.left = ((e as MouseEvent).clientX).toString() + "px"
         document.getElementById("selection")!.style.top = ((e as MouseEvent).clientY).toString() + "px"
-        
+
         document.querySelector("#right")!.addEventListener("mousemove", (e2) => {
-
-
             if (clicked) {
+                document.getElementById("selection")!.style.display = "block";
 
                 document.getElementById("selection")!.style.width = ((e2 as MouseEvent).clientX - (e as MouseEvent).clientX).toString() + "px";
                 document.getElementById("selection")!.style.height = ((e2 as MouseEvent).clientY - (e as MouseEvent).clientY).toString() + "px";
@@ -116,4 +114,3 @@ image.onload = () => {
         })
     })
 }
-

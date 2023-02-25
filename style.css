@@ -50,5 +50,5 @@ p.map{
     display: none;
     position:absolute;
     background-color:yellow;
-    border: 1px solid rgba(6, 217, 160, 0.3);   
+    opacity: 0.5;   
 }
