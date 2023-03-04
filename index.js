@@ -10,11 +10,14 @@ image.onload = function () {
     var heightOfOnePiece = 48;
     var imagePieces1 = [];
     var imagePieces2 = [];
+    var selectedCanvasArray = [];
     var canvasRightId = 0;
     var tempCanvasId = "";
     var clicked;
     var selectionLeft;
     var selectionTop;
+    var selectionWidth;
+    var selectionHeight;
     var _loop_1 = function (i) {
         var _loop_2 = function (j) {
             var canvas = document.createElement('canvas');
@@ -92,7 +95,7 @@ image.onload = function () {
         for (var i = 0; i < 1672; i++) {
             _loop_3(i);
         }
-        document.querySelector("#right").addEventListener("mousemove", function (e2) {
+        document.querySelector("#right").onmousemove = function (e2) {
             if (clicked) {
                 document.getElementById("selection").style.display = "block";
                 if (e2.clientX - e.clientX > 0 && e2.clientY - e.clientY > 0) {
@@ -121,23 +124,29 @@ image.onload = function () {
                 }
                 document.getElementById("selection").style.width = (Math.abs(e2.clientX - e.clientX)).toString() + "px";
                 document.getElementById("selection").style.height = (Math.abs(e2.clientY - e.clientY)).toString() + "px";
-                selectionLeft = selectionLeft - 512;
-                selectionTop = selectionTop - 32;
-                /*console.log("width: " + document.getElementById("selection")!.style.width)
-                console.log("height: " + document.getElementById("selection")!.style.height)
-                console.log("left: " + selectionLeft)
-                console.log("top: " + selectionTop)*/
+                selectionLeft = selectionLeft - 665;
+                selectionTop = selectionTop - 34;
+                selectionWidth = Number(document.getElementById("selection").style.width.substring(0, document.getElementById("selection").style.width.length - 2));
+                selectionHeight = Number(document.getElementById("selection").style.height.substring(0, document.getElementById("selection").style.height.length - 2));
                 /*--------------------------SZUKANIE PIERWSZEGO ZAZNACZONEGO CANVASA---------------------------------*/
-                /*console.log(Math.round(selectionLeft / 26))
-                console.log(Math.round(selectionTop / 26))*/
-                console.log((Math.round(selectionTop / 26) * 38) + (Math.round(selectionLeft / 26) * 44));
-                document.querySelector("#right").addEventListener("mouseup", function () {
+                try {
+                    var firstSelectedId = (Math.floor(selectionTop / 28) * 44) + (Math.floor(selectionLeft / 28));
+                    var lastSelectedRowId = firstSelectedId + Math.floor(selectionWidth / 28);
+                    //let lastSelectedCollumnId: number = lastSelectedRowId + (Math.floor(selectionHeight / 28) * 38)
+                    console.log(firstSelectedId);
+                    for (var i = firstSelectedId; i < lastSelectedRowId; i++) {
+                        document.getElementById(i.toString()).style.border = "1px dotted red";
+                    }
+                }
+                catch (error) {
+                }
+                document.querySelector("#right").onmouseup = function () {
                     document.getElementById("selection").style.display = "none";
                     document.getElementById("selection").style.width = "0";
                     document.getElementById("selection").style.height = "0";
                     clicked = false;
-                });
+                };
             }
-        });
+        };
     });
 };

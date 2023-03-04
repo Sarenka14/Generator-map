@@ -15,6 +15,8 @@ image.onload = () => {
     let imagePieces1: Array<HTMLCanvasElement> = [];
     let imagePieces2: Array<HTMLCanvasElement> = [];
 
+    let selectedCanvasArray: Array<HTMLCanvasElement> = [];
+
     let canvasRightId: number = 0
 
     let tempCanvasId: string = ""
@@ -23,6 +25,8 @@ image.onload = () => {
 
     let selectionLeft: number
     let selectionTop: number
+    let selectionWidth: number
+    let selectionHeight: number
 
     for (let i = 0; i < numColsToCut; ++i) {
         for (let j = 0; j < numRowsToCut; ++j) {
@@ -97,7 +101,7 @@ image.onload = () => {
             })
         }
 
-        document.querySelector("#right")!.addEventListener("mousemove", (e2) => {
+        (document.querySelector("#right") as HTMLDivElement).onmousemove = (e2) => {
             if (clicked) {
                 document.getElementById("selection")!.style.display = "block";
 
@@ -126,29 +130,33 @@ image.onload = () => {
                 document.getElementById("selection")!.style.width = (Math.abs((e2 as MouseEvent).clientX - (e as MouseEvent).clientX)).toString() + "px";
                 document.getElementById("selection")!.style.height = (Math.abs((e2 as MouseEvent).clientY - (e as MouseEvent).clientY)).toString() + "px";
 
-                selectionLeft = selectionLeft - 512
-                selectionTop = selectionTop - 32
-
-                /*console.log("width: " + document.getElementById("selection")!.style.width)
-                console.log("height: " + document.getElementById("selection")!.style.height)
-                console.log("left: " + selectionLeft)
-                console.log("top: " + selectionTop)*/
+                selectionLeft = selectionLeft - 665
+                selectionTop = selectionTop - 34
+                selectionWidth = Number(document.getElementById("selection")!.style.width.substring(0, document.getElementById("selection")!.style.width.length - 2))
+                selectionHeight = Number(document.getElementById("selection")!.style.height.substring(0, document.getElementById("selection")!.style.height.length - 2))
 
                 /*--------------------------SZUKANIE PIERWSZEGO ZAZNACZONEGO CANVASA---------------------------------*/
 
-                /*console.log(Math.round(selectionLeft / 26))
-                console.log(Math.round(selectionTop / 26))*/
+                try {
+                    let firstSelectedId: number = (Math.floor(selectionTop / 28) * 44) + (Math.floor(selectionLeft / 28))
+                    let lastSelectedRowId: number = firstSelectedId + Math.floor(selectionWidth / 28)
+                    //let lastSelectedCollumnId: number = lastSelectedRowId + (Math.floor(selectionHeight / 28) * 38)
+                    console.log(firstSelectedId)
+                    for(let i = firstSelectedId; i < lastSelectedRowId; i++){
+                        document.getElementById(i.toString())!.style.border = "1px dotted red"
+                    }
+                } catch (error) {
 
-                console.log((Math.round(selectionTop / 26) * 38) + (Math.round(selectionLeft / 26) * 44))
+                }
 
-                document.querySelector("#right")!.addEventListener("mouseup", () => {
+                (document.querySelector("#right") as HTMLDivElement).onmouseup = () => {
                     document.getElementById("selection")!.style.display = "none";
                     document.getElementById("selection")!.style.width = "0";
                     document.getElementById("selection")!.style.height = "0";
 
                     clicked = false
-                })
+                }
             }
-        })
+        }
     })
 }

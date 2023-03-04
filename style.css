@@ -8,7 +8,7 @@ canvas {
     border: 1px solid black;
 }
 
-canvas:hover{
+canvas:hover {
     opacity: 1;
     border: 1px dotted red;
     cursor: pointer;
@@ -18,37 +18,37 @@ body {
     background-color: black;
 }
 
-#left{
+#left {
     float: left;
     width: fit-content;
 }
 
-#right{
+#right {
     float: right;
 }
 
-#right canvas{
+#right canvas {
     border: 1px dotted white;
     opacity: 1;
 }
 
-#right canvas:hover{
+#right canvas:hover {
     border: 1px dotted red;
 }
 
-p.items{
+p.items {
     margin-left: 10%;
 }
 
-p.map{
+p.map {
     position: absolute;
     top: -10px;
     margin-left: 63%;
 }
 
-#selection{ 
+#selection {
     display: none;
-    position:absolute;
-    background-color:yellow;
-    opacity: 0.5;   
+    position: absolute;
+    background-color: yellow;
+    opacity: 0.5;
 }
