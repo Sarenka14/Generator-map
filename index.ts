@@ -19,8 +19,6 @@ image.onload = () => {
 
     let canvasRightId: number = 0
 
-    let tempCanvasId: string = ""
-
     let clicked: boolean
 
     let selectionLeft: number
@@ -42,19 +40,24 @@ image.onload = () => {
             }
 
             canvas.addEventListener('click', function () {
-                if (tempCanvasId != "") {
-                    let tempCanvas = <HTMLCanvasElement>document.getElementById(tempCanvasId);
+                if (selectedCanvasArray.length > 1) {
+                    for (let k = 0; k < selectedCanvasArray.length; k++) {
+                        let tempCanvas = selectedCanvasArray[k];
+                        let tempContext = tempCanvas.getContext('2d');
+                        (tempContext as CanvasRenderingContext2D).drawImage(image, j * widthOfOnePiece, i * heightOfOnePiece, widthOfOnePiece, heightOfOnePiece, 0, 0, 24, 24);
+                        tempCanvas.style.border = "1px dotted white"
+                    }
+                    selectedCanvasArray = []
+                } else {
+                    let tempCanvas = selectedCanvasArray[0];
                     let tempContext = tempCanvas.getContext('2d');
                     (tempContext as CanvasRenderingContext2D).drawImage(image, j * widthOfOnePiece, i * heightOfOnePiece, widthOfOnePiece, heightOfOnePiece, 0, 0, 24, 24);
-                    document.getElementById(tempCanvasId)!.style.border = "1px dotted white"
+                    tempCanvas.style.border = "1px dotted white"
                     var checkbox = <HTMLInputElement>document.getElementById("automat");
-                    if (checkbox.checked == true) {
-                        let num = Number(tempCanvasId);
-                        num++
-                        tempCanvasId = num.toString()
-                        document.getElementById(tempCanvasId)!.style.border = "1px dotted red"
-                    } else {
-                        tempCanvasId = ""
+                    if (checkbox.checked) {
+                        let tempCanvasId: number = (Number(selectedCanvasArray[0].id) + 1)
+                        selectedCanvasArray[0] = (document.getElementById(tempCanvasId.toString()) as HTMLCanvasElement)
+                        selectedCanvasArray[0].style.border = "1px dotted red"
                     }
                 }
             })
@@ -90,13 +93,14 @@ image.onload = () => {
 
     document.querySelector("#right")!.addEventListener("mousedown", (e) => {
         clicked = true
-        if (tempCanvasId != "") {
-            document.getElementById(tempCanvasId)!.style.border = "1px dotted white"
+        for (let i = 0; i < selectedCanvasArray.length; i++) {
+            selectedCanvasArray[i].style.border = "1px dotted white"
         }
 
         for (let i = 0; i < 1672; i++) {
             document.getElementById(i.toString())!.addEventListener('click', function () {
-                tempCanvasId = i.toString()
+                selectedCanvasArray = []
+                selectedCanvasArray.push((document.getElementById(i.toString()) as HTMLCanvasElement))
                 document.getElementById(i.toString())!.style.border = "1px dotted red"
             })
         }
@@ -138,12 +142,20 @@ image.onload = () => {
                 /*--------------------------SZUKANIE PIERWSZEGO ZAZNACZONEGO CANVASA---------------------------------*/
 
                 try {
+                    for (let i = 0; i < selectedCanvasArray.length; i++) {
+                        selectedCanvasArray[i].style.border = "1px dotted white"
+                    }
+                    selectedCanvasArray = []
                     let firstSelectedId: number = (Math.floor(selectionTop / 28) * 44) + (Math.floor(selectionLeft / 28))
                     let lastSelectedRowId: number = firstSelectedId + Math.floor(selectionWidth / 28)
-                    //let lastSelectedCollumnId: number = lastSelectedRowId + (Math.floor(selectionHeight / 28) * 38)
-                    console.log(firstSelectedId)
-                    for(let i = firstSelectedId; i < lastSelectedRowId; i++){
-                        document.getElementById(i.toString())!.style.border = "1px dotted red"
+                    let selectedCollumns: number = Math.floor(selectionHeight / 28)
+                    for (let i = firstSelectedId; i <= lastSelectedRowId; i++) {
+                        for (let j = 0; j <= selectedCollumns; j++) {
+                            selectedCanvasArray.push((document.getElementById((i + (j * 44)).toString())) as HTMLCanvasElement)
+                        }
+                    }
+                    for (let i = 0; i < selectedCanvasArray.length; i++) {
+                        selectedCanvasArray[i].style.border = "1px dotted red"
                     }
                 } catch (error) {
 

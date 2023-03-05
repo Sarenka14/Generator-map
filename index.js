@@ -12,7 +12,6 @@ image.onload = function () {
     var imagePieces2 = [];
     var selectedCanvasArray = [];
     var canvasRightId = 0;
-    var tempCanvasId = "";
     var clicked;
     var selectionLeft;
     var selectionTop;
@@ -32,20 +31,25 @@ image.onload = function () {
                 imagePieces2.push(canvas);
             }
             canvas.addEventListener('click', function () {
-                if (tempCanvasId != "") {
-                    var tempCanvas = document.getElementById(tempCanvasId);
+                if (selectedCanvasArray.length > 1) {
+                    for (var k = 0; k < selectedCanvasArray.length; k++) {
+                        var tempCanvas = selectedCanvasArray[k];
+                        var tempContext = tempCanvas.getContext('2d');
+                        tempContext.drawImage(image, j * widthOfOnePiece, i * heightOfOnePiece, widthOfOnePiece, heightOfOnePiece, 0, 0, 24, 24);
+                        tempCanvas.style.border = "1px dotted white";
+                    }
+                    selectedCanvasArray = [];
+                }
+                else {
+                    var tempCanvas = selectedCanvasArray[0];
                     var tempContext = tempCanvas.getContext('2d');
                     tempContext.drawImage(image, j * widthOfOnePiece, i * heightOfOnePiece, widthOfOnePiece, heightOfOnePiece, 0, 0, 24, 24);
-                    document.getElementById(tempCanvasId).style.border = "1px dotted white";
+                    tempCanvas.style.border = "1px dotted white";
                     var checkbox = document.getElementById("automat");
-                    if (checkbox.checked == true) {
-                        var num = Number(tempCanvasId);
-                        num++;
-                        tempCanvasId = num.toString();
-                        document.getElementById(tempCanvasId).style.border = "1px dotted red";
-                    }
-                    else {
-                        tempCanvasId = "";
+                    if (checkbox.checked) {
+                        var tempCanvasId = (Number(selectedCanvasArray[0].id) + 1);
+                        selectedCanvasArray[0] = document.getElementById(tempCanvasId.toString());
+                        selectedCanvasArray[0].style.border = "1px dotted red";
                     }
                 }
             });
@@ -83,12 +87,13 @@ image.onload = function () {
     }
     document.querySelector("#right").addEventListener("mousedown", function (e) {
         clicked = true;
-        if (tempCanvasId != "") {
-            document.getElementById(tempCanvasId).style.border = "1px dotted white";
+        for (var i = 0; i < selectedCanvasArray.length; i++) {
+            selectedCanvasArray[i].style.border = "1px dotted white";
         }
         var _loop_3 = function (i) {
             document.getElementById(i.toString()).addEventListener('click', function () {
-                tempCanvasId = i.toString();
+                selectedCanvasArray = [];
+                selectedCanvasArray.push(document.getElementById(i.toString()));
                 document.getElementById(i.toString()).style.border = "1px dotted red";
             });
         };
@@ -130,12 +135,20 @@ image.onload = function () {
                 selectionHeight = Number(document.getElementById("selection").style.height.substring(0, document.getElementById("selection").style.height.length - 2));
                 /*--------------------------SZUKANIE PIERWSZEGO ZAZNACZONEGO CANVASA---------------------------------*/
                 try {
+                    for (var i = 0; i < selectedCanvasArray.length; i++) {
+                        selectedCanvasArray[i].style.border = "1px dotted white";
+                    }
+                    selectedCanvasArray = [];
                     var firstSelectedId = (Math.floor(selectionTop / 28) * 44) + (Math.floor(selectionLeft / 28));
                     var lastSelectedRowId = firstSelectedId + Math.floor(selectionWidth / 28);
-                    //let lastSelectedCollumnId: number = lastSelectedRowId + (Math.floor(selectionHeight / 28) * 38)
-                    console.log(firstSelectedId);
-                    for (var i = firstSelectedId; i < lastSelectedRowId; i++) {
-                        document.getElementById(i.toString()).style.border = "1px dotted red";
+                    var selectedCollumns = Math.floor(selectionHeight / 28);
+                    for (var i = firstSelectedId; i <= lastSelectedRowId; i++) {
+                        for (var j = 0; j <= selectedCollumns; j++) {
+                            selectedCanvasArray.push((document.getElementById((i + (j * 44)).toString())));
+                        }
+                    }
+                    for (var i = 0; i < selectedCanvasArray.length; i++) {
+                        selectedCanvasArray[i].style.border = "1px dotted red";
                     }
                 }
                 catch (error) {
