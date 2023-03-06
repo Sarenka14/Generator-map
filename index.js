@@ -87,14 +87,22 @@ image.onload = function () {
     }
     document.querySelector("#right").addEventListener("mousedown", function (e) {
         clicked = true;
-        for (var i = 0; i < selectedCanvasArray.length; i++) {
-            selectedCanvasArray[i].style.border = "1px dotted white";
-        }
         var _loop_3 = function (i) {
             document.getElementById(i.toString()).addEventListener('click', function () {
-                selectedCanvasArray = [];
-                selectedCanvasArray.push(document.getElementById(i.toString()));
-                document.getElementById(i.toString()).style.border = "1px dotted red";
+                document.querySelector("#right").onclick = function (e3) {
+                    if (e3.metaKey) {
+                        selectedCanvasArray.push(document.getElementById(i.toString()));
+                        document.getElementById(i.toString()).style.border = "1px dotted red";
+                    }
+                    else {
+                        for (var k = 0; k < selectedCanvasArray.length; k++) {
+                            selectedCanvasArray[k].style.border = '1px dotted white';
+                        }
+                        selectedCanvasArray = [];
+                        selectedCanvasArray.push(document.getElementById(i.toString()));
+                        document.getElementById(i.toString()).style.border = "1px dotted red";
+                    }
+                };
             });
         };
         for (var i = 0; i < 1672; i++) {
@@ -135,21 +143,38 @@ image.onload = function () {
                 selectionHeight = Number(document.getElementById("selection").style.height.substring(0, document.getElementById("selection").style.height.length - 2));
                 /*--------------------------SZUKANIE PIERWSZEGO ZAZNACZONEGO CANVASA---------------------------------*/
                 try {
-                    for (var i = 0; i < selectedCanvasArray.length; i++) {
-                        selectedCanvasArray[i].style.border = "1px dotted white";
-                    }
-                    selectedCanvasArray = [];
-                    var firstSelectedId = (Math.floor(selectionTop / 28) * 44) + (Math.floor(selectionLeft / 28));
-                    var lastSelectedRowId = firstSelectedId + Math.floor(selectionWidth / 28);
-                    var selectedCollumns = Math.floor(selectionHeight / 28);
-                    for (var i = firstSelectedId; i <= lastSelectedRowId; i++) {
-                        for (var j = 0; j <= selectedCollumns; j++) {
-                            selectedCanvasArray.push((document.getElementById((i + (j * 44)).toString())));
+                    document.querySelector("#right").onclick = function (e3) {
+                        if (e3.metaKey) {
+                            var firstSelectedId = (Math.floor(selectionTop / 28) * 44) + (Math.floor(selectionLeft / 28));
+                            var lastSelectedRowId = firstSelectedId + Math.floor(selectionWidth / 28);
+                            var selectedCollumns = Math.floor(selectionHeight / 28);
+                            for (var i = firstSelectedId; i <= lastSelectedRowId; i++) {
+                                for (var j = 0; j <= selectedCollumns; j++) {
+                                    selectedCanvasArray.push((document.getElementById((i + (j * 44)).toString())));
+                                }
+                            }
+                            for (var i = 0; i < selectedCanvasArray.length; i++) {
+                                selectedCanvasArray[i].style.border = "1px dotted red";
+                            }
                         }
-                    }
-                    for (var i = 0; i < selectedCanvasArray.length; i++) {
-                        selectedCanvasArray[i].style.border = "1px dotted red";
-                    }
+                        else {
+                            for (var i = 0; i < selectedCanvasArray.length; i++) {
+                                selectedCanvasArray[i].style.border = "1px dotted white";
+                            }
+                            selectedCanvasArray = [];
+                            var firstSelectedId = (Math.floor(selectionTop / 28) * 44) + (Math.floor(selectionLeft / 28));
+                            var lastSelectedRowId = firstSelectedId + Math.floor(selectionWidth / 28);
+                            var selectedCollumns = Math.floor(selectionHeight / 28);
+                            for (var i = firstSelectedId; i <= lastSelectedRowId; i++) {
+                                for (var j = 0; j <= selectedCollumns; j++) {
+                                    selectedCanvasArray.push((document.getElementById((i + (j * 44)).toString())));
+                                }
+                            }
+                            for (var i = 0; i < selectedCanvasArray.length; i++) {
+                                selectedCanvasArray[i].style.border = "1px dotted red";
+                            }
+                        }
+                    };
                 }
                 catch (error) {
                 }
